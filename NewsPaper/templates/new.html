@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+
+{% load  my_filters %}
+
+{% block title %}
+    Главная новость
+{% endblock title %}
+
+
+{% block body %}
+    <div style="text-align: center;">
+        <h1>
+            {{ post.title|censore }}
+        </h1>
+    </div>
+
+    <hr>
+
+    <div style="text-align: left;">
+        <h5>
+            Дата публикации новости: {{ post.created_at|date:'d M Y' }}
+        </h5>
+    </div>
+
+    <hr>
+
+    <div style="text-align: left;">
+    {{ post.text|censore }}
+    </div>
+
+
+{% endblock body %}

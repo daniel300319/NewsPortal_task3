@@ -1,0 +1,58 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% load  my_filters %}
+
+
+{% block title %}
+    Список всех новостей
+{% endblock title %}
+
+{% block body %}
+
+    <div style="text-align: center;">
+        <h2>
+            СПИСОК ВСЕХ НОВОСТЕЙ
+        </h2>
+    </div>
+    <div style="text-align: right;">
+        <h7>
+            Доступные для чтения новости: {{ posts|length }}
+        </h7>
+    </div>
+    <hr>
+<!-- Проверяем новости на наличие, выводим, если есть: -->
+    {% if posts %}
+        <div style="text-align: center;">
+            <table width="100%">
+                <tr>
+                    <td align="center">Заголовок</td> 
+                    <td align="center">Дата публикации новости</td> 
+                    <td align="center">Текст поста</td> 
+                    <td align="center">Тип поста</td> 
+                </tr> 
+
+
+                
+                {% for post in posts %}
+                    <tr>
+                        <td align="left"><a href={{ post.pk }}>{{ post.title|censore }}</a></td>
+                        <td align="center">{{ post.created_at|date:'d M Y' }}</td>
+                        <td align="left">{{ post.text|truncatechars:20|censore }}</td>
+                        {% if post.type_post == 'ART' %}
+                            <td>Статья</td>
+                        {% else %}
+                            <td>Новость</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+<!-- Если новостей нет, то выводим отбивку -->
+    {% else %}
+        <h2>ДОСТУПНЫХ ДЛЯ ЧТЕНИЯ НОВОСТЕЙ НЕТ</h2>
+    {% endif %}
+
+{% endblock body %}
