@@ -1,0 +1,74 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% load  my_filters %}
+
+{%  load custom_tags %}
+
+{% block body %}
+
+    <div style="text-align: center;">
+        <h2>
+            Найдите нужные Вам статьи:
+        </h2>
+    </div>
+    <form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+    </form>
+        <div style="text-align: center;">
+            <table width="100%">
+                <tr>
+                    <td align="center">Заголовок</td>
+                    <td align="center">Дата публикации новости</td>
+                    <td align="center">Текст поста</td>
+                    <td align="center">Тип поста</td>
+                </tr>
+                {% for post in posts_search %}
+                    <tr>
+                        <td align="left"><a href={{ post.pk }}>{{ post.title|censore }}</a></td>
+                        <td align="center">{{ post.created_at|date:'d M Y' }}</td>
+                        <td align="left">{{ post.text|truncatechars:20|censore }}</td>
+                        {% if post.type_post == 'ART' %}
+                            <td>Статья</td>
+                        {% else %}
+                            <td>Новость</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+<!-- Добавляем пагинацию на страницу -->
+
+    <hr>
+
+    <center>
+    {% if page_obj.number != 1 %}
+        <a href="?{% url_replace page=1 %}">Начало</a>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+    {%  if page_obj.number != page_obj.paginator.num_pages %}
+        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">Конец</a>
+    {% endif %}
+</center>
+{% endblock body %}
