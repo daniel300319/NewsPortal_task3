@@ -45,7 +45,8 @@ class PostSearch(ListView):
 
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'create_post.html'
@@ -57,7 +58,8 @@ class NewsCreate(CreateView):
         return context
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'create_post.html'
@@ -70,7 +72,8 @@ class ArticleCreate(CreateView):
 
 
 # Представление для изменения новости одинаково с созданием, используем только другой дженерик
-class NewsEdit(UpdateView):
+class NewsEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'create_post.html'
@@ -82,7 +85,8 @@ class NewsEdit(UpdateView):
         return context
 
 
-class ArticleEdit(UpdateView):
+class ArticleEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'create_post.html'
